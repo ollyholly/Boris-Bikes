@@ -23,12 +23,9 @@ describe DockingStation do
   it 'not release bike if not available' do
     expect { DockingStation.new.release_bike }.to raise_error(RuntimeError, 'there are no bikes')
   end
-  it 'can not dock bike if there is a bike' do
-    bike1 = Bike.new
-    bike2 = Bike.new
+  it 'can not dock bike if the station is full' do
     station = DockingStation.new
-    station.dock(bike1)
-
-    expect { station.dock(bike2) }.to raise_error(RuntimeError, 'can not dock a bike')
+    DockingStation::DEFAULT_CAPACITY.times { station.dock(Bike.new) }
+    expect { station.dock(Bike.new) }.to raise_error(RuntimeError, 'can not dock a bike')
   end
 end
