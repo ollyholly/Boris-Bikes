@@ -1,4 +1,6 @@
-require "bike"
+# frozen_string_literal: true
+
+require 'bike'
 
 describe Bike do
   it { respond_to(:working?) }
@@ -6,5 +8,4 @@ describe Bike do
     bike = Bike.new
     expect(bike).to be_working
   end
-  
 end
