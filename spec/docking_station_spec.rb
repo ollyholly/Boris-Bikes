@@ -7,25 +7,31 @@ describe DockingStation do
   it { is_expected.to respond_to(:dock).with(1).argument }
   it { is_expected.to respond_to(:has_bike) }
 
+  it 'station is created with a default capacity' do
+    expect(subject.capacity).to eq subject.capacity
+  end
+
+  it 'station is created with a specified capacity' do
+    subject = DockingStation.new(50)
+    expect(subject.capacity).to eq 50
+  end
+
   it 'releases a working bike' do
-    docking_station = DockingStation.new
-    docking_station.dock(Bike.new)
-    expect(docking_station.release_bike).to be_working
+    subject.dock(Bike.new)
+    expect(subject.release_bike).to be_working
   end
 
   it 'has a bike' do
     bike = Bike.new
-    station = DockingStation.new
-    station.dock(bike)
-    expect(station.has_bike).to eq(bike)
+    subject.dock(bike)
+    expect(subject.has_bike).to eq(bike)
   end
 
   it 'not release bike if not available' do
-    expect { DockingStation.new.release_bike }.to raise_error(RuntimeError, 'there are no bikes')
+    expect { subject.release_bike }.to raise_error(RuntimeError, 'there are no bikes')
   end
   it 'can not dock bike if the station is full' do
-    station = DockingStation.new
-    DockingStation::DEFAULT_CAPACITY.times { station.dock(Bike.new) }
-    expect { station.dock(Bike.new) }.to raise_error(RuntimeError, 'can not dock a bike')
+    subject.capacity.times { subject.dock(Bike.new) }
+    expect { subject.dock(Bike.new) }.to raise_error(RuntimeError, 'can not dock a bike')
   end
 end
