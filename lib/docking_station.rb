@@ -6,7 +6,7 @@ class DockingStation
 
   DEFAULT_CAPACITY = 20
 
-  def initialize(capacity=DEFAULT_CAPACITY)
+  def initialize(capacity = DEFAULT_CAPACITY)
     @collection = []
     @capacity = capacity
   end
@@ -14,7 +14,8 @@ class DockingStation
   def release_bike
     raise 'there are no bikes' if empty?
 
-    collection.pop
+    collection.each { |bike| return bike if bike.working? }
+    raise 'there are no working bikes'
   end
 
   def dock(bike)
