@@ -6,7 +6,7 @@ class DockingStation
 
   DEFAULT_CAPACITY = 20
 
-  def initialize(capacity = DEFAULT_CAPACITY)
+  def initialize(capacity=DEFAULT_CAPACITY)
     @collection = []
     @capacity = capacity
   end
@@ -33,7 +33,7 @@ class DockingStation
   attr_reader :collection
 
   def full?
-    collection.length >= capacity
+    collection.length == capacity
   end
 
   def empty?
