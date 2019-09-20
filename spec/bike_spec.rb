@@ -5,7 +5,7 @@ require 'bike'
 describe Bike do
   it { respond_to(:broken?) }
   it 'is working?' do
-    expect(subject).not_to be_broken
+    expect(subject).to be_working
   end
 
   describe '#report_broken' do
