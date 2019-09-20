@@ -12,4 +12,8 @@ class Bike
   def working?
     !@broken
   end
+
+  def repair
+    @broken = false
+  end
 end

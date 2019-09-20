@@ -16,7 +16,7 @@ describe DockingStation do
   end
 
   it 'releases a working bike' do
-    bike = double(:bike, broken?: false)
+    bike = double(:bike, working?: true)
     subject.dock(bike)
 
     expect(subject.release_bike).to be bike
@@ -24,7 +24,7 @@ describe DockingStation do
 
   it 'does not release a broken bike' do
     # allow(bike).to receive(:working?).and_return(true)
-    bike = double(:bike, broken?: true)
+    bike = double(:bike, working?: false)
     allow(bike).to receive(:report_broken)
 
     bike.report_broken

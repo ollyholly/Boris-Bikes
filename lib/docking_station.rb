@@ -15,7 +15,7 @@ class DockingStation
   def release_bike
     raise 'there are no bikes' if empty?
 
-    docked_bikes.each { |bike| return bike unless bike.broken? }
+    docked_bikes.each { |bike| return bike if bike.working? }
     raise 'there are no working bikes'
   end
 
