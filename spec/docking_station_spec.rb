@@ -3,10 +3,7 @@
 require 'docking_station'
 
 describe DockingStation do
-  # let(:bike) { Bike.new }
-
-  it { is_expected.to respond_to(:release_bike) }
-  it { is_expected.to respond_to(:dock).with(1).arguments }
+  let(:bike) { double :bike }
 
   it 'has a default capacity' do
     expect(subject.capacity).to eq DockingStation::DEFAULT_CAPACITY
@@ -19,22 +16,27 @@ describe DockingStation do
   end
 
   it 'releases a working bike' do
-    subject.dock double(:bike)
+    bike = double(:bike, broken?: false)
+    subject.dock(bike)
 
-    expect(subject.release_bike).to be_working
+    expect(subject.release_bike).to be bike
   end
 
   it 'does not release a broken bike' do
-    double(:bike).report_broken
-    subject.dock double(:bike)
+    # allow(bike).to receive(:working?).and_return(true)
+    bike = double(:bike, broken?: true)
+    allow(bike).to receive(:report_broken)
+
+    bike.report_broken
+    subject.dock(bike)
 
     expect { subject.release_bike }.to raise_error(RuntimeError, 'there are no working bikes')
   end
 
   it 'has a bike' do
-    subject.dock double(:bike)
+    subject.dock(bike)
 
-    expect(subject.docked_bikes[0]).to eq double(:bike)
+    expect(subject.docked_bikes[0]).to eq bike
   end
 
   it 'doesnt release a bike if not available' do
@@ -42,15 +44,17 @@ describe DockingStation do
   end
 
   it 'cant dock a bike if the station is full' do
-    subject.capacity.times { subject.dock double(:bike) }
+    subject.capacity.times { subject.dock(bike) }
 
-    expect { subject.dock double(:bike) }.to raise_error(RuntimeError, 'can not dock a bike')
+    expect { subject.dock(bike) }.to raise_error(RuntimeError, 'can not dock a bike')
   end
 
   it 'flags broken bikes when docked' do
-    double(:bike).report_broken
-    subject.dock double(:bike)
+    bike = double(:bike, broken?: true)
+    allow(bike).to receive(:report_broken)
+    bike.report_broken
+    subject.dock(bike)
 
-    expect(double(:bike).broken?).to eq true
+    expect(bike).to be_broken
   end
 end
